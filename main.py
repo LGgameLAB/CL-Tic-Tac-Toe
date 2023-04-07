@@ -1,6 +1,6 @@
 import colorama as cl
 from colorama import Fore, Style, Back, ansi
-import time, sys, os
+import time, sys, os, random
 if os.name == 'nt':
     import msvcrt
 
@@ -11,9 +11,7 @@ def printw(statement, delay=2, command = lambda: True):
         print("\x1b[1A\x1b[2K", end = "")
 
 class Board:
-    def __init__(self, l):
-        self.letter = l
-        self.AiLetter = "X" if self.letter is "O" else "O"
+    def __init__(self):
         self.board = ["-" for x in range(9)]
         # self.board[0] = "X"
         self.isrend = False
@@ -27,10 +25,16 @@ class Board:
         for l in example:
             print(Back.WHITE + Style.BRIGHT + Fore.GREEN + "".join(l))
         print("---------------------------------------------\n")
+        v = input(Fore.LIGHTMAGENTA_EX + "Choose X (Goes first) or O (Goes Second) >>>")
+        self.letter = "X" if v.upper() in ["X", "XX"] else "O" 
+        self.AiLetter = "X" if self.letter is "O" else "O"
+        print("\x1b[1A\x1b[2K", end = "")
+        if self.AiLetter == "X":
+            self.board[random.randint(0, 8)] = "X"
 
-    def render(self):
+    def render(self, delete=4):
         if self.isrend:
-            [print("\x1b[1A\x1b[2K", end = "") for x in range(4)]
+            [print("\x1b[1A\x1b[2K", end = "") for x in range(delete)]
         
         self.display = [[f" {self.board[z+3*(x)]} " for z in range(3)] for x in range(3)]
         for l in self.display:
@@ -53,7 +57,7 @@ class Board:
                 print(Fore.YELLOW + "Thou hast drawn")
             i = input(Fore.GREEN + "would you like to play again?").lower()
             if i in ["y", "yes", "ye", "yeah"]:
-                self.__init__(self.letter)
+                self.__init__()
                 self.isrend = False
             else:
                 sys.exit()
@@ -113,15 +117,15 @@ class Board:
         return max(scores) if maximizing else min(scores)
             
 cl.init(autoreset=True)
-letter = "O"
-b = Board(letter)
+b = Board()
 while True:
-    b.render()
+    b.render(3)
     if not b.checkWinner():
         try:
-            i = input(f"{Fore.GREEN}Choose your position {letter} >>>")
+            i = input(f"{Fore.GREEN}Choose your position {b.letter} >>>")
             b.getPlayerMove(i)
-            printw(Fore.RED + "Ai is thinking...", 1.5, b.getAiMove)
+            b.render()
+            printw(f'{Fore.RED}"{b.AiLetter}" is thinking...', 1.5, b.getAiMove)
         except:
             print("Please Enter a number 1-9 in an unoccupied space", end="\r")
             time.sleep(1.5)

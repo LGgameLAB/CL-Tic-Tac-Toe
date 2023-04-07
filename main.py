@@ -5,11 +5,9 @@ if os.name == 'nt':
     import msvcrt
 
 def printw(statement, delay=2, command = lambda: True):
-    print(statement)
     if command():
+        print(statement)
         time.sleep(delay)
-        print("\x1b[1A\x1b[2K", end = "")
-    else:
         print("\x1b[1A\x1b[2K", end = "")
 
 class Board:
@@ -52,7 +50,7 @@ class Board:
             if won:
                 print(f"{Fore.RED}You lost (ￗ﹏ￗ )" if won == "X" else f"{Fore.LIGHTCYAN_EX}YOU WIN :)))")
             else:
-                print("Thou hast drawn")
+                print(Fore.YELLOW + "Thou hast drawn")
             i = input(Fore.GREEN + "would you like to play again?").lower()
             if i in ["y", "yes", "ye", "yeah"]:
                 self.__init__(self.letter)
@@ -84,13 +82,12 @@ class Board:
         # All the columns/diagnols which pieces can win on
         wins = [ [0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6] ];
 
-        # Goes through each state
         for i in range(0,8):
             if(board[wins[i][0]] != '-' and
             board[wins[i][0]] == board[wins[i][1]] and
             board[wins[i][0]] == board[wins[i][2]]):
                 return board[wins[i][2]]
-        return 0
+        return False
 
     def oppositeMark(self, m):
         if m == self.AiLetter:

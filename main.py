@@ -52,7 +52,7 @@ class Board:
         won = self.analyze(self.board)
         if won or not '-' in self.board:
             if won:
-                print(f"{Fore.RED}You lost (ￗ﹏ￗ )" if won == "X" else f"{Fore.LIGHTCYAN_EX}YOU WIN :)))")
+                print(f"{Fore.RED}You lost (ￗ﹏ￗ )" if won == self.AiLetter else f"{Fore.LIGHTCYAN_EX}YOU WIN :)))")
             else:
                 print(Fore.YELLOW + "Thou hast drawn")
             i = input(Fore.GREEN + "would you like to play again?").lower()
@@ -127,9 +127,9 @@ while True:
             b.render()
             printw(f'{Fore.RED}"{b.AiLetter}" is thinking...', 1.5, b.getAiMove)
         except:
-            print("Please Enter a number 1-9 in an unoccupied space", end="\r")
+            print("Please Enter a number 1-9 in an unoccupied space")
             time.sleep(1.5)
             if os.name == 'nt':
                 while msvcrt.kbhit():
                     msvcrt.getch()
-            print("\x1b[2K", end="")
+            [print("\x1b[1A\x1b[2K", end="") for x in range(2)]

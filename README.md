@@ -1,15 +1,15 @@
 # CL-tic-tac-toe
 
-Inarguably the best terminal tic-tac-toe in existence.
+Super awesome command line tic-tac-toe
 
 ## Usage
 
-Make sure you have the dependencies
-```bash
-pip install -r requirements.txt
+Make sure you have the dependencies. Projcet uses [uv](https://docs.astral.sh/uv/)
+```bashhttps://github.com/LGgameLAB/CL-Tic-Tac-Toe/tree/master
+uv sync
 ```
 run
 ```bash
-python main.py
+uv run main.py
 ```
-and that's it :)
+ye
